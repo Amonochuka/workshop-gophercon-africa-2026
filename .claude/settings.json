@@ -1,0 +1,16 @@
+{
+  "model": "opus",
+  "permissions": {
+    "allow": [
+      "Bash(make templ)",
+      "Bash(python3 .claude/skills/ui-ux-pro-max/scripts/search.py *)",
+      "Bash(python .claude/skills/ui-ux-pro-max/scripts/search.py *)",
+      "Bash(go build ./...)",
+      "Bash(curl -s http://localhost:*)",
+      "Edit(/web/**)"
+    ],
+    "deny": [
+      "Edit(/internal/domain/sighting/sighting.go)"
+    ]
+  }
+}

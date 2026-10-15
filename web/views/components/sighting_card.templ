@@ -14,7 +14,9 @@ templ SightingCard(s sighting.Sighting) {
 	<article class="card" id={ Anchor(s) }>
 		<div class="card__photo">
 			if m, ok := firstPhoto(s.Media); ok {
-				<img src={ m.URL } alt={ "A " + displayName(s.Species) + ": " + altText(m) } loading="lazy"/>
+				<a class="card__zoom" href={ templ.URL(m.URL) } data-lightbox data-caption={ photoCaption(s, m) }>
+					<img src={ m.URL } alt={ "A " + displayName(s.Species) + ": " + altText(m) } loading="lazy"/>
+				</a>
 				if m.Creator != "" {
 					<span class="card__credit">© { m.Creator }</span>
 				}

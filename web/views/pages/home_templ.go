@@ -59,7 +59,7 @@ func Home(sightings []sighting.Sighting) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"hero__content\"><p class=\"eyebrow\">Live from the wild</p><h1 id=\"hero-title\">Every glow is an <span class=\"glow\">animal</span> someone saw.</h1><p class=\"hero__lede\">Wildlife sightings from across the planet, plotted in the dark.</p><dl class=\"stats\"><div><dt>Sightings</dt><dd>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"hero__content\"><p class=\"eyebrow reveal\"><span class=\"pulse\" aria-hidden=\"true\"></span>Live from the wild</p><h1 id=\"hero-title\" class=\"reveal\" style=\"--reveal-delay: 120ms\">Every glow is an <span class=\"glow\">animal</span> someone saw.</h1><p class=\"hero__lede reveal\" style=\"--reveal-delay: 240ms\">Wildlife sightings from across the planet, plotted in the dark.</p><dl class=\"stats reveal\" style=\"--reveal-delay: 360ms\"><div><dt>Sightings</dt><dd>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -98,7 +98,7 @@ func Home(sightings []sighting.Sighting) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</dd></div></dl><a class=\"button\" href=\"#map\">Explore the map</a></div></section><section class=\"section\" id=\"map\" aria-labelledby=\"map-title\"><div class=\"section__head\"><p class=\"eyebrow\">Tracks</p><h2 id=\"map-title\">Where they were seen</h2></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</dd></div></dl><a class=\"button reveal\" style=\"--reveal-delay: 480ms\" href=\"#map\">Explore the map</a></div><a class=\"scroll-cue\" href=\"#map\" aria-label=\"Scroll to the map\"><span></span></a></section><section class=\"section\" id=\"map\" aria-labelledby=\"map-title\"><div class=\"section__head reveal\"><p class=\"eyebrow\">Tracks</p><h2 id=\"map-title\">Where they were seen</h2></div><div class=\"reveal\" style=\"--reveal-delay: 150ms\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -111,7 +111,7 @@ func Home(sightings []sighting.Sighting) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</section><section class=\"section\" id=\"sightings\" aria-labelledby=\"sightings-title\"><div class=\"section__head\"><p class=\"eyebrow\">Field log</p><h2 id=\"sightings-title\">Sightings</h2></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</div></section><section class=\"section\" id=\"sightings\" aria-labelledby=\"sightings-title\"><div class=\"section__head reveal\"><p class=\"eyebrow\">Field log</p><h2 id=\"sightings-title\">Sightings</h2></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

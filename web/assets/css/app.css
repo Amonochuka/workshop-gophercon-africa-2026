@@ -8,6 +8,7 @@
 	--eyeshine: #FFB547;
 	--ember: #FF7A3D;
 	--moss: #7FD1A8;
+	--firefly: #B8F36B;
 
 	--font-display: "Outfit", system-ui, sans-serif;
 	--font-body: "Work Sans", system-ui, sans-serif;
@@ -21,7 +22,8 @@
 	--map-radius: var(--radius);
 	--globe-body: #0F1C17;
 	--globe-grid: #2A4A3C;
-	--globe-halo: #7FD1A8;
+	--globe-halo: #B8F36B;
+	--globe-fireflies: #B8F36B;
 	--globe-points: #FFB547;
 	--globe-stars: #E9EEE6;
 }
@@ -128,8 +130,9 @@ h3 {
 }
 
 .site-nav a:hover {
-	color: var(--moon);
+	color: var(--firefly);
 	background: var(--bush-raised);
+	box-shadow: 0 0 18px -4px color-mix(in srgb, var(--firefly) 60%, transparent);
 }
 
 /* Hero */
@@ -159,8 +162,11 @@ h3 {
 }
 
 .eyebrow {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
 	margin: 0 0 0.75rem;
-	color: var(--moss);
+	color: var(--firefly);
 	font-size: 0.8rem;
 	font-weight: 500;
 	letter-spacing: 0.18em;
@@ -174,8 +180,78 @@ h3 {
 }
 
 .glow {
-	color: var(--eyeshine);
-	text-shadow: 0 0 24px color-mix(in srgb, var(--eyeshine) 60%, transparent);
+	background: linear-gradient(90deg, var(--eyeshine), var(--firefly), var(--eyeshine));
+	background-size: 200% 100%;
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+	filter: drop-shadow(0 0 18px color-mix(in srgb, var(--firefly) 45%, transparent));
+	animation: shimmer 6s linear infinite;
+}
+
+@keyframes shimmer {
+	to {
+		background-position: 200% 0;
+	}
+}
+
+.pulse {
+	position: relative;
+	width: 0.55rem;
+	height: 0.55rem;
+	border-radius: 50%;
+	background: var(--firefly);
+	box-shadow: 0 0 10px var(--firefly);
+}
+
+.pulse::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: 50%;
+	border: 2px solid var(--firefly);
+	animation: ping 1.8s ease-out infinite;
+}
+
+@keyframes ping {
+	to {
+		transform: scale(3);
+		opacity: 0;
+	}
+}
+
+.scroll-cue {
+	position: absolute;
+	left: 50%;
+	bottom: 1.5rem;
+	z-index: 1;
+	width: 1.6rem;
+	height: 2.6rem;
+	border: 2px solid color-mix(in srgb, var(--moon) 50%, transparent);
+	border-radius: 999px;
+	translate: -50% 0;
+}
+
+.scroll-cue span {
+	position: absolute;
+	left: 50%;
+	top: 0.45rem;
+	width: 4px;
+	height: 0.55rem;
+	border-radius: 2px;
+	background: var(--firefly);
+	translate: -50% 0;
+	animation: cue 1.8s ease-in-out infinite;
+}
+
+@keyframes cue {
+	60% {
+		transform: translateY(0.9rem);
+		opacity: 0;
+	}
+	100% {
+		opacity: 0;
+	}
 }
 
 .hero__lede {
@@ -220,7 +296,18 @@ h3 {
 	transition: box-shadow 0.25s, transform 0.25s;
 }
 
+.button {
+	animation: breathe 3.2s ease-in-out infinite;
+}
+
+@keyframes breathe {
+	50% {
+		box-shadow: 0 0 28px 2px color-mix(in srgb, var(--eyeshine) 40%, transparent);
+	}
+}
+
 .button:hover {
+	animation: none;
 	box-shadow: 0 0 32px 4px color-mix(in srgb, var(--eyeshine) 45%, transparent);
 	transform: translateY(-2px);
 }
@@ -259,6 +346,25 @@ h3 {
 	color: var(--night);
 }
 
+.lightbox::backdrop {
+	background: color-mix(in srgb, var(--night) 92%, transparent);
+	backdrop-filter: blur(6px);
+}
+
+.lightbox__image {
+	border-radius: var(--radius);
+	box-shadow: 0 0 60px -10px color-mix(in srgb, var(--firefly) 40%, transparent);
+}
+
+.lightbox__caption {
+	color: var(--mist);
+}
+
+.lightbox__close {
+	background: var(--bush-raised);
+	color: var(--firefly);
+}
+
 .empty {
 	color: var(--mist);
 }
@@ -285,9 +391,37 @@ h3 {
 
 .card:hover,
 .card:target {
-	transform: translateY(-4px);
-	border-color: color-mix(in srgb, var(--eyeshine) 60%, var(--line));
-	box-shadow: 0 12px 40px -12px color-mix(in srgb, var(--eyeshine) 35%, transparent);
+	transform: translateY(-6px);
+	border-color: color-mix(in srgb, var(--firefly) 55%, var(--line));
+	box-shadow: 0 14px 44px -12px color-mix(in srgb, var(--firefly) 35%, transparent);
+}
+
+.card:hover .card__photo img {
+	transform: scale(1.08);
+}
+
+.card__zoom {
+	display: block;
+	height: 100%;
+	overflow: hidden;
+}
+
+/* Tiles rise in as they scroll into view, where the browser can tie it to scrolling. */
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		.sightings > li {
+			animation: tile-in linear both;
+			animation-timeline: view();
+			animation-range: entry 0% entry 70%;
+		}
+	}
+}
+
+@keyframes tile-in {
+	from {
+		opacity: 0;
+		transform: translateY(2.5rem) scale(0.96);
+	}
 }
 
 .card__photo {
@@ -296,10 +430,15 @@ h3 {
 	background: radial-gradient(circle at 50% 60%, var(--bush-raised), var(--night));
 }
 
+.card__photo {
+	overflow: hidden;
+}
+
 .card__photo img {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+	transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .card__credit {
@@ -332,7 +471,7 @@ h3 {
 
 .card__date {
 	margin: 0 0 0.35rem;
-	color: var(--moss);
+	color: var(--firefly);
 	font-size: 0.8rem;
 	letter-spacing: 0.06em;
 	text-transform: uppercase;
@@ -421,5 +560,6 @@ h3 {
 	*::before,
 	*::after {
 		transition: none !important;
+		animation: none !important;
 	}
 }

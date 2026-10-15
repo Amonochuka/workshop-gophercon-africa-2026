@@ -18,31 +18,34 @@ templ Home(sightings []sighting.Sighting) {
 				Backdrop: true,
 			})
 			<div class="hero__content">
-				<p class="eyebrow">Live from the wild</p>
-				<h1 id="hero-title">Every glow is an <span class="glow">animal</span> someone saw.</h1>
-				<p class="hero__lede">Wildlife sightings from across the planet, plotted in the dark.</p>
-				<dl class="stats">
+				<p class="eyebrow reveal"><span class="pulse" aria-hidden="true"></span>Live from the wild</p>
+				<h1 id="hero-title" class="reveal" style="--reveal-delay: 120ms">Every glow is an <span class="glow">animal</span> someone saw.</h1>
+				<p class="hero__lede reveal" style="--reveal-delay: 240ms">Wildlife sightings from across the planet, plotted in the dark.</p>
+				<dl class="stats reveal" style="--reveal-delay: 360ms">
 					<div><dt>Sightings</dt><dd>{ summary.Sightings }</dd></div>
 					<div><dt>Species</dt><dd>{ summary.Species }</dd></div>
 					<div><dt>Countries</dt><dd>{ summary.Countries }</dd></div>
 				</dl>
-				<a class="button" href="#map">Explore the map</a>
+				<a class="button reveal" style="--reveal-delay: 480ms" href="#map">Explore the map</a>
 			</div>
+			<a class="scroll-cue" href="#map" aria-label="Scroll to the map"><span></span></a>
 		</section>
 		<section class="section" id="map" aria-labelledby="map-title">
-			<div class="section__head">
+			<div class="section__head reveal">
 				<p class="eyebrow">Tracks</p>
 				<h2 id="map-title">Where they were seen</h2>
 			</div>
-			@components.Map(components.MapProps{
-				Points:  components.MapPoints(sightings),
-				Cluster: true,
-				Label:   "Map of where each animal was seen. Every sighting is also listed below.",
-				Class:   "map--dark",
-			})
+			<div class="reveal" style="--reveal-delay: 150ms">
+				@components.Map(components.MapProps{
+					Points:  components.MapPoints(sightings),
+					Cluster: true,
+					Label:   "Map of where each animal was seen. Every sighting is also listed below.",
+					Class:   "map--dark",
+				})
+			</div>
 		</section>
 		<section class="section" id="sightings" aria-labelledby="sightings-title">
-			<div class="section__head">
+			<div class="section__head reveal">
 				<p class="eyebrow">Field log</p>
 				<h2 id="sightings-title">Sightings</h2>
 			</div>

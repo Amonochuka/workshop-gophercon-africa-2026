@@ -14,7 +14,8 @@ Dark, like a night safari: torchlight in the bush. Sightings glow amber like eye
 | `--mist` | `#9DB0A6` | secondary text |
 | `--eyeshine` | `#FFB547` | the accent: buttons, links, markers, globe points, focus rings |
 | `--ember` | `#FF7A3D` | spare warm accent |
-| `--moss` | `#7FD1A8` | small labels (eyebrows, dates), globe halo |
+| `--moss` | `#7FD1A8` | spare cool accent |
+| `--firefly` | `#B8F36B` | the neon touch: eyebrows, card dates, hover glows, globe halo and fireflies, headline shimmer |
 
 The globe reads `--globe-*` and the map reads `--map-marker*`; they point at the palette.
 
@@ -38,4 +39,9 @@ The globe reads `--globe-*` and the map reads `--map-marker*`; they point at the
 
 ## Motion
 
-Gentle lifts and amber glow on hover (≈250ms). Everything respects reduced motion.
+Lively but gentle. Everything stops under reduced motion.
+
+- Banner: headline, stats and button fade up one after another (`reveal`); "animal" shimmers amber→firefly; a pulsing firefly dot by "Live from the wild"; the button breathes a glow; a scroll cue bobs at the bottom.
+- Globe: sighting points blink on their own beats, stars twinkle, ~70 firefly-green specks drift in front, a shooting star every few seconds, the halo pulses.
+- Sections and the map fade up as you reach them (`reveal`); tiles rise in as they scroll into view (CSS scroll-driven animation, so browsers without it just show them).
+- Tiles lift with a firefly glow on hover and the photo zooms slightly; clicking a photo opens it big (`lightbox`) with its animal, place and credit.

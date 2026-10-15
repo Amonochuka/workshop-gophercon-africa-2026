@@ -1,31 +1,40 @@
 :root {
-	--night: #0A1210;
-	--bush: #111D19;
-	--bush-raised: #18281F;
-	--line: #24382F;
-	--moon: #E9EEE6;
-	--mist: #9DB0A6;
-	--eyeshine: #FFB547;
-	--ember: #FF7A3D;
-	--moss: #7FD1A8;
-	--firefly: #B8F36B;
+	/* Thermal/Infrared palette - predator vision */
+	--void: #030508;
+	--cool: #081018;
+	--cool-raised: #0C1824;
+	--line: #1A2A3A;
+	--warm: #E8D5C0;
+	--mist: #8B9BAF;
+	--hot: #FF3D00;
+	--hot-mid: #FF8C00;
+	--hot-soft: #FFB84D;
+	--white-hot: #FFF8E7;
 
 	--font-display: "Outfit", system-ui, sans-serif;
 	--font-body: "Work Sans", system-ui, sans-serif;
+	--font-hud: "JetBrains Mono", ui-monospace, monospace;
 
-	--radius: 14px;
+	--radius: 6px;
 	--space: clamp(1rem, 3vw, 2rem);
 	--wrap: 1200px;
 
-	--map-marker: var(--eyeshine);
-	--map-marker-stroke: var(--night);
+	--map-marker: var(--hot);
+	--map-marker-stroke: var(--void);
 	--map-radius: var(--radius);
-	--globe-body: #0F1C17;
-	--globe-grid: #2A4A3C;
-	--globe-halo: #B8F36B;
-	--globe-fireflies: #B8F36B;
-	--globe-points: #FFB547;
-	--globe-stars: #E9EEE6;
+	--globe-body: #020810;
+	--globe-grid: #0A1A2A;
+	--globe-halo: #FF6B1A;
+	--globe-fireflies: #FFD4A0;
+	--globe-points: #FF3D00;
+	--globe-stars: #4A6A8A;
+
+	/* Faint scan lines for hero/map only */
+	--scanlines: repeating-linear-gradient(to bottom, rgb(0 0 0 / 0.15) 0 1px, transparent 1px 3px);
+
+	/* Thermal gradient for text/glows */
+	--thermal: linear-gradient(180deg, #FFF8E7 0%, #FFB84D 25%, #FF8C00 50%, #FF3D00 75%, #8B1A00 100%);
+	--thermal-rim: radial-gradient(circle at 50% 50%, #FF3D00 0%, transparent 70%);
 }
 
 * {
@@ -39,8 +48,8 @@ html {
 
 body {
 	margin: 0;
-	background: var(--night);
-	color: var(--moon);
+	background: var(--void);
+	color: var(--warm);
 	font: 1rem/1.6 var(--font-body);
 	-webkit-font-smoothing: antialiased;
 }
@@ -52,7 +61,7 @@ img {
 }
 
 a {
-	color: var(--eyeshine);
+	color: var(--hot-soft);
 }
 
 h1,
@@ -64,7 +73,7 @@ h3 {
 }
 
 :focus-visible {
-	outline: 2px solid var(--eyeshine);
+	outline: 2px solid var(--hot);
 	outline-offset: 3px;
 	border-radius: 4px;
 }
@@ -75,8 +84,8 @@ h3 {
 	top: -3rem;
 	z-index: 100;
 	padding: 0.5rem 1rem;
-	background: var(--eyeshine);
-	color: var(--night);
+	background: var(--hot);
+	color: var(--void);
 	border-radius: 8px;
 }
 
@@ -95,7 +104,7 @@ h3 {
 	justify-content: space-between;
 	gap: 1rem;
 	padding: 0.85rem var(--space);
-	background: color-mix(in srgb, var(--night) 75%, transparent);
+	background: color-mix(in srgb, var(--void) 75%, transparent);
 	backdrop-filter: blur(12px);
 	border-bottom: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
 }
@@ -104,7 +113,7 @@ h3 {
 	display: flex;
 	align-items: center;
 	gap: 0.6rem;
-	color: var(--moon);
+	color: var(--warm);
 	text-decoration: none;
 }
 
@@ -130,9 +139,9 @@ h3 {
 }
 
 .site-nav a:hover {
-	color: var(--firefly);
-	background: var(--bush-raised);
-	box-shadow: 0 0 18px -4px color-mix(in srgb, var(--firefly) 60%, transparent);
+	color: var(--hot);
+	background: var(--cool-raised);
+	box-shadow: 0 0 18px -4px color-mix(in srgb, var(--hot) 60%, transparent);
 }
 
 /* Hero */
@@ -145,8 +154,9 @@ h3 {
 	padding: var(--space);
 	overflow: hidden;
 	background:
-		radial-gradient(ellipse at 70% 40%, #12261D 0%, transparent 60%),
-		var(--night);
+		radial-gradient(ellipse at 70% 40%, rgba(255, 61, 0, 0.12) 0%, transparent 60%),
+		radial-gradient(ellipse at 30% 60%, rgba(255, 140, 0, 0.08) 0%, transparent 50%),
+		var(--void);
 }
 
 .hero__content {
@@ -166,7 +176,7 @@ h3 {
 	align-items: center;
 	gap: 0.6rem;
 	margin: 0 0 0.75rem;
-	color: var(--firefly);
+	color: var(--hot-soft);
 	font-size: 0.8rem;
 	font-weight: 500;
 	letter-spacing: 0.18em;
@@ -180,12 +190,12 @@ h3 {
 }
 
 .glow {
-	background: linear-gradient(90deg, var(--eyeshine), var(--firefly), var(--eyeshine));
+	background: linear-gradient(90deg, var(--hot), var(--hot-soft), var(--hot));
 	background-size: 200% 100%;
 	-webkit-background-clip: text;
 	background-clip: text;
 	color: transparent;
-	filter: drop-shadow(0 0 18px color-mix(in srgb, var(--firefly) 45%, transparent));
+	filter: drop-shadow(0 0 18px color-mix(in srgb, var(--hot) 45%, transparent));
 	animation: shimmer 6s linear infinite;
 }
 
@@ -200,8 +210,8 @@ h3 {
 	width: 0.55rem;
 	height: 0.55rem;
 	border-radius: 50%;
-	background: var(--firefly);
-	box-shadow: 0 0 10px var(--firefly);
+	background: var(--hot-mid);
+	box-shadow: 0 0 10px var(--hot-mid);
 }
 
 .pulse::after {
@@ -209,7 +219,7 @@ h3 {
 	position: absolute;
 	inset: 0;
 	border-radius: 50%;
-	border: 2px solid var(--firefly);
+	border: 2px solid var(--hot-mid);
 	animation: ping 1.8s ease-out infinite;
 }
 
@@ -227,7 +237,7 @@ h3 {
 	z-index: 1;
 	width: 1.6rem;
 	height: 2.6rem;
-	border: 2px solid color-mix(in srgb, var(--moon) 50%, transparent);
+	border: 2px solid color-mix(in srgb, var(--warm) 50%, transparent);
 	border-radius: 999px;
 	translate: -50% 0;
 }
@@ -239,7 +249,7 @@ h3 {
 	width: 4px;
 	height: 0.55rem;
 	border-radius: 2px;
-	background: var(--firefly);
+	background: var(--hot);
 	translate: -50% 0;
 	animation: cue 1.8s ease-in-out infinite;
 }
@@ -281,18 +291,18 @@ h3 {
 	font-family: var(--font-display);
 	font-size: 2.2rem;
 	font-weight: 600;
-	color: var(--moon);
+	color: var(--warm);
 }
 
 .button {
 	display: inline-block;
 	padding: 0.85rem 1.6rem;
 	border-radius: 999px;
-	background: var(--eyeshine);
-	color: var(--night);
+	background: var(--hot);
+	color: var(--void);
 	font-weight: 600;
 	text-decoration: none;
-	box-shadow: 0 0 0 0 color-mix(in srgb, var(--eyeshine) 50%, transparent);
+	box-shadow: 0 0 0 0 color-mix(in srgb, var(--hot) 50%, transparent);
 	transition: box-shadow 0.25s, transform 0.25s;
 }
 
@@ -302,13 +312,13 @@ h3 {
 
 @keyframes breathe {
 	50% {
-		box-shadow: 0 0 28px 2px color-mix(in srgb, var(--eyeshine) 40%, transparent);
+		box-shadow: 0 0 28px 2px color-mix(in srgb, var(--hot) 40%, transparent);
 	}
 }
 
 .button:hover {
 	animation: none;
-	box-shadow: 0 0 32px 4px color-mix(in srgb, var(--eyeshine) 45%, transparent);
+	box-shadow: 0 0 32px 4px color-mix(in srgb, var(--hot) 45%, transparent);
 	transform: translateY(-2px);
 }
 
@@ -331,29 +341,29 @@ h3 {
 
 .map {
 	border: 1px solid var(--line);
-	background: var(--bush);
+	background: var(--cool);
 	--map-height: 60vh;
 	aspect-ratio: auto;
 }
 
 .map .leaflet-popup-content-wrapper,
 .map .leaflet-popup-tip {
-	background: var(--bush-raised);
-	color: var(--moon);
+	background: var(--cool-raised);
+	color: var(--warm);
 }
 
 .map .marker-cluster div {
-	color: var(--night);
+	color: var(--void);
 }
 
 .lightbox::backdrop {
-	background: color-mix(in srgb, var(--night) 92%, transparent);
+	background: color-mix(in srgb, var(--void) 92%, transparent);
 	backdrop-filter: blur(6px);
 }
 
 .lightbox__image {
 	border-radius: var(--radius);
-	box-shadow: 0 0 60px -10px color-mix(in srgb, var(--firefly) 40%, transparent);
+	box-shadow: 0 0 60px -10px color-mix(in srgb, var(--hot) 40%, transparent);
 }
 
 .lightbox__caption {
@@ -361,8 +371,8 @@ h3 {
 }
 
 .lightbox__close {
-	background: var(--bush-raised);
-	color: var(--firefly);
+	background: var(--cool-raised);
+	color: var(--hot-soft);
 }
 
 .empty {
@@ -384,18 +394,19 @@ h3 {
 	height: 100%;
 	border: 1px solid var(--line);
 	border-radius: var(--radius);
-	background: var(--bush);
+	background: var(--cool);
 	transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
 }
 
 .card:hover,
 .card:target {
 	transform: translateY(-6px);
-	border-color: color-mix(in srgb, var(--firefly) 55%, var(--line));
-	box-shadow: 0 14px 44px -12px color-mix(in srgb, var(--firefly) 35%, transparent);
+	border-color: color-mix(in srgb, var(--hot) 55%, var(--line));
+	box-shadow: 0 14px 44px -12px color-mix(in srgb, var(--hot) 35%, transparent);
 }
 
 .card__zoom {
+	position: relative;
 	display: block;
 	height: 100%;
 	overflow: hidden;
@@ -422,7 +433,7 @@ h3 {
 .card__photo {
 	position: relative;
 	aspect-ratio: 4 / 3;
-	background: radial-gradient(circle at 50% 60%, var(--bush-raised), var(--night));
+	background: radial-gradient(circle at 50% 60%, var(--cool-raised), var(--void));
 }
 
 .card__photo {
@@ -445,7 +456,7 @@ h3 {
 	overflow: hidden;
 	padding: 0.15rem 0.5rem;
 	border-radius: 999px;
-	background: color-mix(in srgb, var(--night) 75%, transparent);
+	background: color-mix(in srgb, var(--void) 75%, transparent);
 	color: var(--mist);
 	font-size: 0.7rem;
 	white-space: nowrap;
@@ -467,7 +478,7 @@ h3 {
 
 .card__date {
 	margin: 0 0 0.35rem;
-	color: var(--firefly);
+	color: var(--hot-soft);
 	font-size: 0.8rem;
 	letter-spacing: 0.06em;
 	text-transform: uppercase;
@@ -523,7 +534,7 @@ h3 {
 
 .error h1 {
 	font-size: 5rem;
-	color: var(--eyeshine);
+	color: var(--hot);
 }
 
 @media (max-width: 900px) {
@@ -587,14 +598,14 @@ h3 {
 }
 
 .sound-toggle:hover {
-	color: var(--moon);
+	color: var(--warm);
 	border-color: var(--mist);
 }
 
 .sound-toggle[aria-pressed="true"] {
-	color: var(--firefly);
-	border-color: var(--firefly);
-	box-shadow: 0 0 18px -4px color-mix(in srgb, var(--firefly) 70%, transparent);
+	color: var(--hot);
+	border-color: var(--hot);
+	box-shadow: 0 0 18px -4px color-mix(in srgb, var(--hot) 70%, transparent);
 }
 
 .sound-toggle[aria-pressed="true"] .sound-toggle__waves {
@@ -625,7 +636,7 @@ h3 {
 }
 
 .js.has-sound .card {
-	cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24'%3E%3Cpath d='M4 9v6h4l5 4V5L8 9H4z' fill='%23B8F36B'/%3E%3Cpath d='M16 8.5a5 5 0 0 1 0 7' stroke='%23B8F36B' stroke-width='2' fill='none'/%3E%3C/svg%3E") 4 14, pointer;
+	cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24'%3E%3Cpath d='M4 9v6h4l5 4V5L8 9H4z' fill='%23FF3D00'/%3E%3Cpath d='M16 8.5a5 5 0 0 1 0 7' stroke='%23FF3D00' stroke-width='2' fill='none'/%3E%3C/svg%3E") 4 14, pointer;
 }
 
 /* Sound waves ripple out from the photo while the animal calls. */
@@ -645,9 +656,9 @@ h3 {
 .card.is-calling .card__ripple {
 	animation: ripple 1.4s ease-out;
 	box-shadow:
-		0 0 0 2px var(--firefly),
-		0 0 0 14px color-mix(in srgb, var(--firefly) 30%, transparent),
-		0 0 0 30px color-mix(in srgb, var(--firefly) 12%, transparent);
+		0 0 0 2px var(--hot),
+		0 0 0 14px color-mix(in srgb, var(--hot) 30%, transparent),
+		0 0 0 30px color-mix(in srgb, var(--hot) 12%, transparent);
 }
 
 @keyframes ripple {
@@ -672,7 +683,7 @@ h3 {
 	--gx: 50%;
 	--gy: 30%;
 	z-index: 1;
-	transform: perspective(800px) rotateX(var(--rx)) rotateY(var(--ry));
+	transform: perspective(600px) rotateX(var(--rx)) rotateY(var(--ry)) translateZ(12px);
 	transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s;
 }
 
@@ -680,8 +691,8 @@ h3 {
 	content: "";
 	position: absolute;
 	inset: 0;
-	background: radial-gradient(circle at var(--gx) var(--gy), rgb(255 255 255 / 0.22), transparent 55%);
-	mix-blend-mode: soft-light;
+	background: radial-gradient(circle at var(--gx) var(--gy), rgba(255, 140, 0, 0.18), transparent 55%);
+	mix-blend-mode: screen;
 	opacity: 0;
 	pointer-events: none;
 	transition: opacity 0.3s;
@@ -689,7 +700,9 @@ h3 {
 
 .card:hover .card__photo,
 .card:focus-within .card__photo {
-	box-shadow: 0 18px 40px -14px rgb(0 0 0 / 0.8);
+	box-shadow:
+		0 24px 48px -16px rgb(0 0 0 / 0.9),
+		0 0 60px -12px color-mix(in srgb, var(--hot) 35%, transparent);
 }
 
 .card:hover .card__photo::after {
@@ -698,8 +711,15 @@ h3 {
 
 .card:hover .card__photo img,
 .card:focus-within .card__photo img {
-	transform: scale(1.14) translate(var(--px), var(--py));
-	transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+	transform: scale(1.18) translate(var(--px), var(--py)) translateZ(20px);
+	transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.3s ease;
+}
+
+.card:hover .card__zoom,
+.card:focus-within .card__zoom {
+	box-shadow:
+		0 0 40px -10px color-mix(in srgb, var(--hot) 50%, transparent),
+		0 0 80px -20px color-mix(in srgb, var(--hot-mid) 30%, transparent);
 }
 
 /* The lunge: the photo leaves its frame and the animal comes at you, in its own way. */
@@ -709,7 +729,7 @@ h3 {
 		animation: lift 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
 		box-shadow:
 			0 30px 60px -18px rgb(0 0 0 / 0.9),
-			0 0 40px -8px color-mix(in srgb, var(--firefly) 45%, transparent);
+			0 0 40px -8px color-mix(in srgb, var(--hot) 45%, transparent);
 	}
 
 	.card--pounce.is-lunging .card__photo img { animation: lunge-pounce 1.5s cubic-bezier(0.3, 0, 0.2, 1); }
@@ -865,21 +885,21 @@ h3 {
 
 @keyframes call-name {
 	50% {
-		color: var(--firefly);
-		text-shadow: 0 0 16px color-mix(in srgb, var(--firefly) 70%, transparent);
+		color: var(--hot-soft);
+		text-shadow: 0 0 16px color-mix(in srgb, var(--hot-soft) 70%, transparent);
 	}
 }
 
 /* While sound is off, hovering a tile points at the sound button. */
 .sound-toggle.is-nudging {
-	color: var(--firefly);
-	border-color: var(--firefly);
+	color: var(--hot-soft);
+	border-color: var(--hot-soft);
 	animation: nudge 0.9s ease-in-out infinite;
 }
 
 @keyframes nudge {
 	50% {
-		box-shadow: 0 0 22px 2px color-mix(in srgb, var(--firefly) 60%, transparent);
+		box-shadow: 0 0 22px 2px color-mix(in srgb, var(--hot-soft) 60%, transparent);
 	}
 }
 
@@ -890,8 +910,8 @@ h3 {
 	z-index: 2;
 	padding: 0.25rem 0.65rem;
 	border-radius: 999px;
-	background: color-mix(in srgb, var(--night) 80%, transparent);
-	color: var(--firefly);
+	background: color-mix(in srgb, var(--void) 80%, transparent);
+	color: var(--hot-soft);
 	font-size: 0.75rem;
 	font-weight: 500;
 	pointer-events: none;
@@ -918,4 +938,112 @@ h3 {
 .card.is-lunging {
 	position: relative;
 	z-index: 5;
+}
+
+/* Night-vision: readouts in mono, a viewfinder on the banner, scan lines, a green map. */
+
+.eyebrow,
+.stats dd,
+.stats dt,
+.card__date,
+.card__credit,
+.card__hint,
+.sound-toggle,
+.hud {
+	font-family: var(--font-hud);
+}
+
+.eyebrow {
+	letter-spacing: 0.14em;
+}
+
+.stats dd {
+	color: var(--hot);
+	font-weight: 500;
+	text-shadow: 0 0 14px color-mix(in srgb, var(--hot) 55%, transparent);
+}
+
+.hero h1 {
+	text-shadow: 0 0 28px color-mix(in srgb, var(--hot) 22%, transparent);
+}
+
+.rec {
+	color: var(--hot-mid);
+	animation: blink 1.2s steps(2, jump-none) infinite;
+}
+
+@keyframes blink {
+	50% {
+		opacity: 0.25;
+	}
+}
+
+/* Scan lines and a vignette over the whole banner, under its content. */
+.hero::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	background:
+		var(--scanlines),
+		radial-gradient(ellipse at center, transparent 55%, rgb(0 0 0 / 0.65) 100%);
+	pointer-events: none;
+}
+
+/* Viewfinder corners. */
+.viewfinder {
+	position: absolute;
+	inset: clamp(0.75rem, 2.5vw, 1.75rem);
+	z-index: 1;
+	pointer-events: none;
+	--c: color-mix(in srgb, var(--hot) 70%, transparent);
+	background:
+		linear-gradient(var(--c), var(--c)) top left / 28px 2px no-repeat,
+		linear-gradient(var(--c), var(--c)) top left / 2px 28px no-repeat,
+		linear-gradient(var(--c), var(--c)) top right / 28px 2px no-repeat,
+		linear-gradient(var(--c), var(--c)) top right / 2px 28px no-repeat,
+		linear-gradient(var(--c), var(--c)) bottom left / 28px 2px no-repeat,
+		linear-gradient(var(--c), var(--c)) bottom left / 2px 28px no-repeat,
+		linear-gradient(var(--c), var(--c)) bottom right / 28px 2px no-repeat,
+		linear-gradient(var(--c), var(--c)) bottom right / 2px 28px no-repeat;
+}
+
+.hud {
+	position: absolute;
+	right: clamp(1.5rem, 4vw, 3rem);
+	bottom: clamp(1.5rem, 4vw, 3rem);
+	z-index: 1;
+	margin: 0;
+	color: color-mix(in srgb, var(--hot) 75%, transparent);
+	font-size: 0.75rem;
+	letter-spacing: 0.12em;
+	text-align: right;
+	pointer-events: none;
+}
+
+/* Thermal heat shimmer on hover */
+.card__photo img {
+	transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.3s ease;
+}
+
+.card:hover .card__photo img,
+.card:focus-within .card__photo img {
+	filter: saturate(1.15) contrast(1.05) brightness(1.02);
+}
+
+.card:hover .card__zoom,
+.card:focus-within .card__zoom {
+	box-shadow:
+		0 0 40px -10px color-mix(in srgb, var(--hot) 50%, transparent),
+		0 0 80px -20px color-mix(in srgb, var(--hot-mid) 30%, transparent);
+}
+
+.map--dark .leaflet-tile {
+	filter: grayscale(1) invert(1) sepia(1) hue-rotate(55deg) saturate(3) brightness(0.5) contrast(1.3);
+}
+
+@media (max-width: 640px) {
+	.hud {
+		display: none;
+	}
 }

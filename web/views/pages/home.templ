@@ -17,8 +17,10 @@ templ Home(sightings []sighting.Sighting) {
 				Scene:    "globe",
 				Backdrop: true,
 			})
+			<div class="viewfinder" aria-hidden="true"></div>
+			<p class="hud" aria-hidden="true">NV MODE · IR ON<br/>TARGETS { summary.Sightings }</p>
 			<div class="hero__content">
-				<p class="eyebrow reveal"><span class="pulse" aria-hidden="true"></span>Live from the wild</p>
+				<p class="eyebrow reveal"><span class="pulse" aria-hidden="true"></span><span class="rec">REC</span> · Live from the wild</p>
 				<h1 id="hero-title" class="reveal" style="--reveal-delay: 120ms">Every glow is an <span class="glow">animal</span> someone saw.</h1>
 				<p class="hero__lede reveal" style="--reveal-delay: 240ms">Wildlife sightings from across the planet, plotted in the dark.</p>
 				<dl class="stats reveal" style="--reveal-delay: 360ms">

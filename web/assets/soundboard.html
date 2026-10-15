@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title>Night Safari: soundboard</title>
+		<link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml"/>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;800&family=Work+Sans:wght@400;500&display=swap"/>
+		<link rel="stylesheet" href="/assets/css/app.css"/>
+		<style>
+			.board { max-width: 1200px; margin: 0 auto; padding: 2rem var(--space); }
+			.board h1 { font-size: 2.4rem; margin-bottom: 0.5rem; }
+			.board > p { color: var(--mist); max-width: 46rem; }
+			.calls { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 1rem; margin: 2rem 0; padding: 0; list-style: none; }
+			.call { display: grid; gap: 0.35rem; padding: 1rem 1.15rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bush); }
+			.call h2 { font-size: 1.2rem; }
+			.call p { margin: 0; color: var(--mist); font-size: 0.9rem; }
+			.call__real { color: var(--moon) !important; }
+			.call__check { font-variant-numeric: tabular-nums; font-size: 0.8rem !important; }
+			.call__check.is-ok { color: var(--firefly) !important; }
+			.call__check.is-off { color: var(--ember) !important; }
+			.call button { justify-self: start; margin-top: 0.4rem; padding: 0.5rem 1.1rem; border: 0; border-radius: 999px; background: var(--eyeshine); color: var(--night); font: inherit; font-weight: 600; cursor: pointer; }
+			.call button:focus-visible { outline: 2px solid var(--firefly); outline-offset: 3px; }
+		</style>
+	</head>
+	<body>
+		<main class="board">
+			<p class="eyebrow">Night Safari</p>
+			<h1>Soundboard</h1>
+			<p>Every call the tiles can make, with the animals that use it and what the real animal sounds like. Press a button to listen. The line under each is a measurement of the synthesised sound: how long it lasts and where its loudest pitch sits, against the range of the real call.</p>
+			<p><a href="/">Back to the sightings</a></p>
+			<ul class="calls" id="calls"></ul>
+			<pre id="report" hidden></pre>
+		</main>
+		<script src="/assets/js/callsynth.js"></script>
+		<script src="/assets/js/soundboard.js"></script>
+	</body>
+</html>

@@ -628,7 +628,7 @@ h3 {
 	position: relative;
 }
 
-.has-sound .card {
+.js.has-sound .card {
 	cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24'%3E%3Cpath d='M4 9v6h4l5 4V5L8 9H4z' fill='%23B8F36B'/%3E%3Cpath d='M16 8.5a5 5 0 0 1 0 7' stroke='%23B8F36B' stroke-width='2' fill='none'/%3E%3C/svg%3E") 4 14, pointer;
 }
 
@@ -753,4 +753,47 @@ h3 {
 		color: var(--firefly);
 		text-shadow: 0 0 16px color-mix(in srgb, var(--firefly) 70%, transparent);
 	}
+}
+
+/* While sound is off, hovering a tile points at the sound button. */
+.sound-toggle.is-nudging {
+	color: var(--firefly);
+	border-color: var(--firefly);
+	animation: nudge 0.9s ease-in-out infinite;
+}
+
+@keyframes nudge {
+	50% {
+		box-shadow: 0 0 22px 2px color-mix(in srgb, var(--firefly) 60%, transparent);
+	}
+}
+
+.card__hint {
+	position: absolute;
+	top: 0.6rem;
+	left: 0.6rem;
+	z-index: 2;
+	padding: 0.25rem 0.65rem;
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--night) 80%, transparent);
+	color: var(--firefly);
+	font-size: 0.75rem;
+	font-weight: 500;
+	pointer-events: none;
+	opacity: 0;
+	transform: translateY(-4px);
+	transition: opacity 0.2s, transform 0.2s;
+}
+
+.js .card:hover .card__hint {
+	opacity: 1;
+	transform: none;
+}
+
+.has-sound .card__hint {
+	display: none;
+}
+
+.js .card {
+	cursor: pointer;
 }

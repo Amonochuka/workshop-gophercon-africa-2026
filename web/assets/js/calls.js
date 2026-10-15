@@ -323,25 +323,29 @@
 	let timer = null;
 	let last = null;
 
+	function sing(card) {
+		play(card.dataset.call);
+		card.classList.remove('is-calling');
+		void card.offsetWidth;
+		card.classList.add('is-calling');
+		setTimeout(() => card.classList.remove('is-calling'), 1600);
+	}
+
 	function call(card) {
 		if (!card || card === last) return;
 		last = card;
 		clearTimeout(timer);
-		timer = setTimeout(function () {
-			play(card.dataset.call);
-			if (on) {
-				card.classList.remove('is-calling');
-				void card.offsetWidth;
-				card.classList.add('is-calling');
-				setTimeout(() => card.classList.remove('is-calling'), 1600);
-			}
-		}, 250);
+		// Sound off: point at the button instead.
+		toggle.classList.toggle('is-nudging', !on);
+		if (!on) return;
+		timer = setTimeout(() => sing(card), 250);
 	}
 
 	function leave(card) {
 		if (card !== last) return;
 		clearTimeout(timer);
 		last = null;
+		toggle.classList.remove('is-nudging');
 	}
 
 	document.querySelectorAll('.card[data-call]').forEach(function (card) {
@@ -349,5 +353,15 @@
 		card.addEventListener('pointerleave', () => leave(card));
 		card.addEventListener('focusin', () => call(card));
 		card.addEventListener('focusout', () => leave(card));
+		// A click on the tile (not its photo) is a gesture, so it can switch sound on there and then.
+		card.addEventListener('click', function (e) {
+			if (e.target.closest('a')) return;
+			audio();
+			ctx.resume();
+			if (!on) set(true);
+			toggle.classList.remove('is-nudging');
+			clearTimeout(timer);
+			sing(card);
+		});
 	});
 })();

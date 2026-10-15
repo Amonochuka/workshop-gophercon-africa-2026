@@ -8,20 +8,55 @@ import (
 
 templ Home(sightings []sighting.Sighting) {
 	@layout.Base(layout.BaseProps{
-		Title: "Sightings",
+		Title:       "Night Safari: wildlife sightings",
+		Description: "Wildlife sightings from around the world, on a globe, a map and in photos.",
 	}) {
-		<h1>Sightings</h1>
-		if len(sightings) == 0 {
-			<p>No sightings have been ingested yet.</p>
-		} else {
-			<p>Total: { len(sightings) }</p>
-			<ul class="sightings">
-				for _, s := range sightings {
-					<li>
-						@components.SightingCard(s)
-					</li>
-				}
-			</ul>
-		}
+		{{ summary := sighting.Summarise(sightings) }}
+		<section class="hero" aria-labelledby="hero-title">
+			@components.ThreeScene(components.ThreeSceneProps{
+				Scene:    "globe",
+				Backdrop: true,
+			})
+			<div class="hero__content">
+				<p class="eyebrow">Live from the wild</p>
+				<h1 id="hero-title">Every glow is an <span class="glow">animal</span> someone saw.</h1>
+				<p class="hero__lede">Wildlife sightings from across the planet, plotted in the dark.</p>
+				<dl class="stats">
+					<div><dt>Sightings</dt><dd>{ summary.Sightings }</dd></div>
+					<div><dt>Species</dt><dd>{ summary.Species }</dd></div>
+					<div><dt>Countries</dt><dd>{ summary.Countries }</dd></div>
+				</dl>
+				<a class="button" href="#map">Explore the map</a>
+			</div>
+		</section>
+		<section class="section" id="map" aria-labelledby="map-title">
+			<div class="section__head">
+				<p class="eyebrow">Tracks</p>
+				<h2 id="map-title">Where they were seen</h2>
+			</div>
+			@components.Map(components.MapProps{
+				Points:  components.MapPoints(sightings),
+				Cluster: true,
+				Label:   "Map of where each animal was seen. Every sighting is also listed below.",
+				Class:   "map--dark",
+			})
+		</section>
+		<section class="section" id="sightings" aria-labelledby="sightings-title">
+			<div class="section__head">
+				<p class="eyebrow">Field log</p>
+				<h2 id="sightings-title">Sightings</h2>
+			</div>
+			if len(sightings) == 0 {
+				<p class="empty">Nothing's moving out there yet. No sightings have been ingested.</p>
+			} else {
+				<ul class="sightings">
+					for _, s := range sightings {
+						<li>
+							@components.SightingCard(s)
+						</li>
+					}
+				</ul>
+			}
+		</section>
 	}
 }

@@ -11,32 +11,37 @@ import (
 )
 
 templ SightingCard(s sighting.Sighting) {
-	<article class="card">
-		<!-- Header -->
-		<header class="card__header">
-			<h2>{ displayName(s.Species) }</h2>
+	<article class="card" id={ Anchor(s) }>
+		<div class="card__photo">
+			if m, ok := firstPhoto(s.Media); ok {
+				<img src={ m.URL } alt={ "A " + displayName(s.Species) + ": " + altText(m) } loading="lazy"/>
+				if m.Creator != "" {
+					<span class="card__credit">© { m.Creator }</span>
+				}
+			} else {
+				<span class="card__nophoto" aria-hidden="true">No photo, just eyes in the dark</span>
+			}
+		</div>
+		<div class="card__body">
+			<p class="card__date">
+				<time datetime={ s.HappenedAt.Format("2006-01-02") }>{ s.HappenedAt.Format("2 January 2006") }</time>
+			</p>
+			<h3 class="card__name">{ displayName(s.Species) }</h3>
 			if s.Species.ScientificName != "" {
 				<p class="card__scientific">{ s.Species.ScientificName }</p>
 			}
-		</header>
-		<!-- Meta -->
-		<dl class="card__meta">
-			<dt>Seen</dt>
-			<dd>{ s.HappenedAt.Format("2 January 2006") }</dd>
-			<dt>Where</dt>
-			<dd>{ place(s.Location) }</dd>
-			if s.IndividualCount != nil {
-				<dt>Count</dt>
-				<dd>{ individuals(*s.IndividualCount) }</dd>
-			}
-			if s.RecordedBy != "" {
-				<dt>Recorded by</dt>
-				<dd>{ s.RecordedBy }</dd>
-			}
-		</dl>
-		<!-- Gallery -->
-		<div class="card__gallery">
-			@Gallery(s.Media)
+			<dl class="card__meta">
+				<dt>Where</dt>
+				<dd>{ place(s.Location) }</dd>
+				if s.IndividualCount != nil {
+					<dt>Count</dt>
+					<dd>{ individuals(*s.IndividualCount) }</dd>
+				}
+				if s.RecordedBy != "" {
+					<dt>Seen by</dt>
+					<dd>{ s.RecordedBy }</dd>
+				}
+			</dl>
 		</div>
 	</article>
 }

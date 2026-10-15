@@ -11,7 +11,9 @@ import (
 )
 
 templ SightingCard(s sighting.Sighting) {
-	<article class="card" id={ Anchor(s) }>
+	{{ call := callOf(s.Species) }}
+	<article class={ "card", "card--" + call.Motion } id={ Anchor(s) } data-call={ call.Sound }>
+		<span class="card__ripple" aria-hidden="true"></span>
 		<div class="card__photo">
 			if m, ok := firstPhoto(s.Media); ok {
 				<a class="card__zoom" href={ templ.URL(m.URL) } data-lightbox data-caption={ photoCaption(s, m) }>

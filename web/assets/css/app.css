@@ -563,3 +563,194 @@ h3 {
 		animation: none !important;
 	}
 }
+
+/* Sound toggle */
+
+.sound-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	margin-left: 0.25rem;
+	padding: 0.45rem 0.85rem;
+	border: 1px solid var(--line);
+	border-radius: 999px;
+	background: transparent;
+	color: var(--mist);
+	font: inherit;
+	font-weight: 500;
+	cursor: pointer;
+	transition: color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.sound-toggle[hidden] {
+	display: none;
+}
+
+.sound-toggle__waves {
+	opacity: 0.3;
+}
+
+.sound-toggle:hover {
+	color: var(--moon);
+	border-color: var(--mist);
+}
+
+.sound-toggle[aria-pressed="true"] {
+	color: var(--firefly);
+	border-color: var(--firefly);
+	box-shadow: 0 0 18px -4px color-mix(in srgb, var(--firefly) 70%, transparent);
+}
+
+.sound-toggle[aria-pressed="true"] .sound-toggle__waves {
+	opacity: 1;
+	animation: waves 1.4s ease-in-out infinite;
+}
+
+@keyframes waves {
+	50% {
+		opacity: 0.4;
+	}
+}
+
+@media (max-width: 480px) {
+	.sound-toggle__label {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip: rect(0 0 0 0);
+	}
+}
+
+/* Animals react on hover, each kind its own way */
+
+.card {
+	position: relative;
+}
+
+.has-sound .card {
+	cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24'%3E%3Cpath d='M4 9v6h4l5 4V5L8 9H4z' fill='%23B8F36B'/%3E%3Cpath d='M16 8.5a5 5 0 0 1 0 7' stroke='%23B8F36B' stroke-width='2' fill='none'/%3E%3C/svg%3E") 4 14, pointer;
+}
+
+/* Sound waves ripple out from the photo while the animal calls. */
+.card__ripple {
+	position: absolute;
+	top: 37%;
+	left: 50%;
+	z-index: 2;
+	width: 3rem;
+	height: 3rem;
+	margin: -1.5rem 0 0 -1.5rem;
+	border-radius: 50%;
+	pointer-events: none;
+	opacity: 0;
+}
+
+.card.is-calling .card__ripple {
+	animation: ripple 1.4s ease-out;
+	box-shadow:
+		0 0 0 2px var(--firefly),
+		0 0 0 14px color-mix(in srgb, var(--firefly) 30%, transparent),
+		0 0 0 30px color-mix(in srgb, var(--firefly) 12%, transparent);
+}
+
+@keyframes ripple {
+	0% {
+		opacity: 1;
+		transform: scale(0.3);
+	}
+	100% {
+		opacity: 0;
+		transform: scale(3.5);
+	}
+}
+
+/* The photo drifts slowly, like a camera following the animal. */
+.card:hover .card__photo img,
+.card:focus-within .card__photo img {
+	transform: scale(1.14) translate(-3%, -2%);
+	transition: transform 4s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.card--pounce:hover {
+		animation: pounce 0.7s cubic-bezier(0.3, 0, 0.3, 1);
+	}
+
+	.card--stomp:hover {
+		animation: stomp 0.7s ease-out;
+	}
+
+	.card--sway:hover {
+		animation: sway 2.4s ease-in-out infinite;
+	}
+
+	.card--flutter:hover {
+		animation: flutter 0.6s ease-in-out 2;
+	}
+
+	.card--swing:hover {
+		animation: swing 1.2s ease-in-out;
+		transform-origin: top center;
+	}
+
+	.card--wiggle:hover {
+		animation: wiggle 0.6s ease-in-out;
+	}
+
+	.card.is-calling .card__name {
+		animation: call-name 0.5s ease-in-out 3;
+	}
+}
+
+@keyframes pounce {
+	0% { transform: none; }
+	25% { transform: translateY(6px) scale(1.02, 0.95); }
+	55% { transform: translateY(-18px) scale(0.98, 1.04) rotate(-1.5deg); }
+	80% { transform: translateY(-4px) rotate(0.5deg); }
+	100% { transform: translateY(-6px); }
+}
+
+@keyframes stomp {
+	0%, 100% { transform: translateY(-6px); }
+	15% { transform: translateY(-14px); }
+	30% { transform: translateY(2px) scale(1.01, 0.98); }
+	40% { transform: translate(-3px, -2px); }
+	50% { transform: translate(3px, -4px); }
+	60% { transform: translate(-2px, -5px); }
+	70% { transform: translate(2px, -6px); }
+}
+
+@keyframes sway {
+	0%, 100% { transform: translate(0, -6px) rotate(0); }
+	25% { transform: translate(-5px, -10px) rotate(-1.2deg); }
+	75% { transform: translate(5px, -2px) rotate(1.2deg); }
+}
+
+@keyframes flutter {
+	0%, 100% { transform: translateY(-6px); }
+	20% { transform: translateY(-14px) rotate(-2deg); }
+	40% { transform: translateY(-4px) rotate(2deg); }
+	60% { transform: translateY(-12px) rotate(-1.5deg); }
+	80% { transform: translateY(-5px) rotate(1deg); }
+}
+
+@keyframes swing {
+	0%, 100% { transform: translateY(-6px) rotate(0); }
+	20% { transform: translateY(-6px) rotate(3deg); }
+	45% { transform: translateY(-6px) rotate(-2.5deg); }
+	70% { transform: translateY(-6px) rotate(1.2deg); }
+}
+
+@keyframes wiggle {
+	0%, 100% { transform: translateY(-6px) rotate(0); }
+	25% { transform: translateY(-6px) rotate(-1.5deg); }
+	75% { transform: translateY(-6px) rotate(1.5deg); }
+}
+
+@keyframes call-name {
+	50% {
+		color: var(--firefly);
+		text-shadow: 0 0 16px color-mix(in srgb, var(--firefly) 70%, transparent);
+	}
+}

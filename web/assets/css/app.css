@@ -382,7 +382,6 @@ h3 {
 
 .card {
 	height: 100%;
-	overflow: hidden;
 	border: 1px solid var(--line);
 	border-radius: var(--radius);
 	background: var(--bush);
@@ -394,10 +393,6 @@ h3 {
 	transform: translateY(-6px);
 	border-color: color-mix(in srgb, var(--firefly) 55%, var(--line));
 	box-shadow: 0 14px 44px -12px color-mix(in srgb, var(--firefly) 35%, transparent);
-}
-
-.card:hover .card__photo img {
-	transform: scale(1.08);
 }
 
 .card__zoom {
@@ -432,6 +427,7 @@ h3 {
 
 .card__photo {
 	overflow: hidden;
+	border-radius: var(--radius) var(--radius) 0 0;
 }
 
 .card__photo img {
@@ -665,11 +661,130 @@ h3 {
 	}
 }
 
-/* The photo drifts slowly, like a camera following the animal. */
+/* The photo as a window: it tilts towards the pointer and the animal sits
+   deeper than the frame, so it shifts the other way. calls.js sets the
+   --rx, --ry (tilt) and --px, --py (parallax) numbers from the pointer. */
+.card__photo {
+	--rx: 0deg;
+	--ry: 0deg;
+	--px: 0%;
+	--py: 0%;
+	--gx: 50%;
+	--gy: 30%;
+	z-index: 1;
+	transform: perspective(800px) rotateX(var(--rx)) rotateY(var(--ry));
+	transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s;
+}
+
+.card__photo::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(circle at var(--gx) var(--gy), rgb(255 255 255 / 0.22), transparent 55%);
+	mix-blend-mode: soft-light;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.3s;
+}
+
+.card:hover .card__photo,
+.card:focus-within .card__photo {
+	box-shadow: 0 18px 40px -14px rgb(0 0 0 / 0.8);
+}
+
+.card:hover .card__photo::after {
+	opacity: 1;
+}
+
 .card:hover .card__photo img,
 .card:focus-within .card__photo img {
-	transform: scale(1.14) translate(-3%, -2%);
-	transition: transform 4s cubic-bezier(0.2, 0.6, 0.2, 1);
+	transform: scale(1.14) translate(var(--px), var(--py));
+	transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* The lunge: the photo leaves its frame and the animal comes at you, in its own way. */
+@media (prefers-reduced-motion: no-preference) {
+	.card.is-lunging .card__photo {
+		z-index: 3;
+		animation: lift 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+		box-shadow:
+			0 30px 60px -18px rgb(0 0 0 / 0.9),
+			0 0 40px -8px color-mix(in srgb, var(--firefly) 45%, transparent);
+	}
+
+	.card--pounce.is-lunging .card__photo img { animation: lunge-pounce 1.5s cubic-bezier(0.3, 0, 0.2, 1); }
+	.card--stomp.is-lunging .card__photo img { animation: lunge-stomp 1.5s ease-out; }
+	.card--sway.is-lunging .card__photo img { animation: lunge-sway 1.8s ease-in-out; }
+	.card--flutter.is-lunging .card__photo img { animation: lunge-flutter 1.3s ease-in-out; }
+	.card--swing.is-lunging .card__photo img { animation: lunge-swing 1.6s ease-in-out; }
+	.card--wiggle.is-lunging .card__photo img { animation: lunge-wiggle 1.4s ease-in-out; }
+}
+
+@keyframes lift {
+	0%, 100% { scale: 1; }
+	30%, 70% { scale: 1.07; }
+}
+
+/* Crouch back, spring forward, snarl with a shake, settle. */
+@keyframes lunge-pounce {
+	0% { transform: scale(1.14) translate(var(--px), var(--py)); }
+	15% { transform: scale(1.08) translateY(2%); }
+	32% { transform: scale(1.55) translateY(-3%); }
+	40% { transform: scale(1.5) translate(-1.2%, -3%) rotate(-1deg); }
+	48% { transform: scale(1.53) translate(1.2%, -2.5%) rotate(1deg); }
+	56% { transform: scale(1.5) translate(-1%, -3%) rotate(-0.6deg); }
+	64% { transform: scale(1.52) translate(0.8%, -2.8%); }
+	100% { transform: scale(1.14) translate(var(--px), var(--py)); }
+}
+
+/* A heavy charge: closer with every footfall. */
+@keyframes lunge-stomp {
+	0% { transform: scale(1.14) translate(var(--px), var(--py)); }
+	20% { transform: scale(1.24) translateY(1.5%); }
+	30% { transform: scale(1.26) translateY(-1%); }
+	45% { transform: scale(1.36) translateY(1.5%); }
+	55% { transform: scale(1.38) translateY(-1%); }
+	70% { transform: scale(1.44) translateY(1%); }
+	100% { transform: scale(1.14) translate(var(--px), var(--py)); }
+}
+
+/* Swimming in: a slow approach with a side-to-side drift. */
+@keyframes lunge-sway {
+	0% { transform: scale(1.14) translate(var(--px), var(--py)); }
+	30% { transform: scale(1.28) translate(-3%, 1%) rotate(-1deg); }
+	60% { transform: scale(1.4) translate(3%, -1%) rotate(1deg); }
+	100% { transform: scale(1.14) translate(var(--px), var(--py)); }
+}
+
+/* Hopping closer, wings and all. */
+@keyframes lunge-flutter {
+	0% { transform: scale(1.14) translate(var(--px), var(--py)); }
+	20% { transform: scale(1.26) translateY(-4%); }
+	35% { transform: scale(1.3) translateY(1%); }
+	50% { transform: scale(1.38) translateY(-4%); }
+	65% { transform: scale(1.4) translateY(0); }
+	100% { transform: scale(1.14) translate(var(--px), var(--py)); }
+}
+
+/* Swinging in on a branch. */
+@keyframes lunge-swing {
+	0% { transform: scale(1.14) translate(var(--px), var(--py)); }
+	30% { transform: scale(1.3) translateX(-5%) rotate(-3deg); }
+	60% { transform: scale(1.42) translateX(3%) rotate(2deg); }
+	100% { transform: scale(1.14) translate(var(--px), var(--py)); }
+}
+
+@keyframes lunge-wiggle {
+	0% { transform: scale(1.14) translate(var(--px), var(--py)); }
+	40% { transform: scale(1.3) rotate(-1deg); }
+	60% { transform: scale(1.32) rotate(1deg); }
+	100% { transform: scale(1.14) translate(var(--px), var(--py)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.card__photo {
+		transform: none;
+	}
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -796,4 +911,11 @@ h3 {
 
 .js .card {
 	cursor: pointer;
+}
+
+/* A lunging photo sits above its neighbours. */
+.sightings > li:has(.is-lunging),
+.card.is-lunging {
+	position: relative;
+	z-index: 5;
 }

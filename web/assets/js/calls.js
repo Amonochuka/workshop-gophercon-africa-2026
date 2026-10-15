@@ -86,22 +86,53 @@
 	let timer = null;
 	let last = null;
 
-	function sing(card) {
-		play(card.dataset.call);
-		card.classList.remove('is-calling');
+	// Restart a one-shot animation class, then take it off when it's done.
+	function flash(card, name, ms) {
+		card.classList.remove(name);
 		void card.offsetWidth;
-		card.classList.add('is-calling');
-		setTimeout(() => card.classList.remove('is-calling'), 1600);
+		card.classList.add(name);
+		clearTimeout(card['_' + name]);
+		card['_' + name] = setTimeout(() => card.classList.remove(name), ms);
+	}
+
+	// The animal comes at you, calling if sound is on.
+	function sing(card) {
+		flash(card, 'is-lunging', 1800);
+		if (!on) return;
+		play(card.dataset.call);
+		flash(card, 'is-calling', 1600);
 	}
 
 	function call(card) {
 		if (!card || card === last) return;
 		last = card;
 		clearTimeout(timer);
-		// Sound off: point at the button instead.
+		// Sound off: point at the button too.
 		toggle.classList.toggle('is-nudging', !on);
-		if (!on) return;
 		timer = setTimeout(() => sing(card), 250);
+	}
+
+	// The photo tilts towards the pointer, and the animal shifts the other way.
+	const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	function tilt(card, e) {
+		const photo = card.querySelector('.card__photo');
+		if (!photo || still) return;
+		const box = photo.getBoundingClientRect();
+		const x = Math.min(Math.max((e.clientX - box.left) / box.width, 0), 1);
+		const y = Math.min(Math.max((e.clientY - box.top) / box.height, 0), 1);
+		photo.style.setProperty('--ry', ((x - 0.5) * 14).toFixed(2) + 'deg');
+		photo.style.setProperty('--rx', ((0.5 - y) * 10).toFixed(2) + 'deg');
+		photo.style.setProperty('--px', ((0.5 - x) * 5).toFixed(2) + '%');
+		photo.style.setProperty('--py', ((0.5 - y) * 4).toFixed(2) + '%');
+		photo.style.setProperty('--gx', (x * 100).toFixed(1) + '%');
+		photo.style.setProperty('--gy', (y * 100).toFixed(1) + '%');
+	}
+
+	function untilt(card) {
+		const photo = card.querySelector('.card__photo');
+		if (!photo) return;
+		['--rx', '--ry', '--px', '--py', '--gx', '--gy'].forEach((p) => photo.style.removeProperty(p));
 	}
 
 	function leave(card) {
@@ -112,8 +143,17 @@
 	}
 
 	document.querySelectorAll('.card[data-call]').forEach(function (card) {
+		let frame = 0;
 		card.addEventListener('pointerenter', () => call(card));
-		card.addEventListener('pointerleave', () => leave(card));
+		card.addEventListener('pointermove', function (e) {
+			cancelAnimationFrame(frame);
+			frame = requestAnimationFrame(() => tilt(card, e));
+		});
+		card.addEventListener('pointerleave', function () {
+			cancelAnimationFrame(frame);
+			untilt(card);
+			leave(card);
+		});
 		card.addEventListener('focusin', () => call(card));
 		card.addEventListener('focusout', () => leave(card));
 		// A click on the tile (not its photo) is a gesture, so it can switch sound on there and then.

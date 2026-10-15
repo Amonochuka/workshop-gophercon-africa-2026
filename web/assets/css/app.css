@@ -144,6 +144,82 @@ h3 {
 	box-shadow: 0 0 18px -4px color-mix(in srgb, var(--hot) 60%, transparent);
 }
 
+.search-wrap {
+	position: relative;
+	display: flex;
+	align-items: center;
+	margin-left: 0.5rem;
+}
+
+#species-search {
+	width: 200px;
+	padding: 0.5rem 2.5rem 0.5rem 2.5rem;
+	border: 1px solid var(--line);
+	border-radius: 999px;
+	background: var(--cool-raised);
+	color: var(--warm);
+	font: inherit;
+	font-size: 0.85rem;
+	transition: border-color 0.2s, box-shadow 0.2s, width 0.2s;
+}
+
+#species-search::placeholder {
+	color: var(--mist);
+	opacity: 0.6;
+}
+
+#species-search:focus {
+	outline: none;
+	border-color: var(--hot);
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--hot) 25%, transparent);
+	width: 260px;
+}
+
+.search-icon {
+	position: absolute;
+	left: 0.75rem;
+	color: var(--mist);
+	pointer-events: none;
+	opacity: 0.5;
+}
+
+.search-clear {
+	position: absolute;
+	right: 0.6rem;
+	width: 1.5rem;
+	height: 1.5rem;
+	border: none;
+	background: transparent;
+	color: var(--mist);
+	font-size: 1.25rem;
+	line-height: 1;
+	cursor: pointer;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.15s, color 0.15s;
+}
+
+.search-clear:hover {
+	color: var(--hot);
+}
+
+.search-wrap:has(#species-search:not(:placeholder-shown)) .search-clear {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
 /* Hero */
 
 .hero {
@@ -722,6 +798,11 @@ h3 {
 		0 0 80px -20px color-mix(in srgb, var(--hot-mid) 30%, transparent);
 }
 
+/* Heat haze active - WebGL shader takes over */
+.card.has-haze .card__photo img {
+	opacity: 0;
+}
+
 /* The lunge: the photo leaves its frame and the animal comes at you, in its own way. */
 @media (prefers-reduced-motion: no-preference) {
 	.card.is-lunging .card__photo {
@@ -742,63 +823,70 @@ h3 {
 
 @keyframes lift {
 	0%, 100% { scale: 1; }
-	30%, 70% { scale: 1.07; }
+	30%, 70% { scale: 1.12; }
 }
 
 /* Crouch back, spring forward, snarl with a shake, settle. */
 @keyframes lunge-pounce {
-	0% { transform: scale(1.14) translate(var(--px), var(--py)); }
-	15% { transform: scale(1.08) translateY(2%); }
-	32% { transform: scale(1.55) translateY(-3%); }
-	40% { transform: scale(1.5) translate(-1.2%, -3%) rotate(-1deg); }
-	48% { transform: scale(1.53) translate(1.2%, -2.5%) rotate(1deg); }
-	56% { transform: scale(1.5) translate(-1%, -3%) rotate(-0.6deg); }
-	64% { transform: scale(1.52) translate(0.8%, -2.8%); }
-	100% { transform: scale(1.14) translate(var(--px), var(--py)); }
+	0% { transform: scale(1.18) translate(var(--px), var(--py)); }
+	10% { transform: scale(1.05, 1.15) translateY(4%); }
+	25% { transform: scale(1.8) translateY(-12%) rotate(-2deg); }
+	35% { transform: scale(1.7) translate(-3%, -10%) rotate(2deg); }
+	45% { transform: scale(1.75) translate(3%, -12%) rotate(-1.5deg); }
+	55% { transform: scale(1.68) translate(-2%, -10%) rotate(1deg); }
+	65% { transform: scale(1.72) translate(1.5%, -11%); }
+	100% { transform: scale(1.18) translate(var(--px), var(--py)); }
 }
 
-/* A heavy charge: closer with every footfall. */
+/* A heavy charge: closer with every footfall, ground shakes. */
 @keyframes lunge-stomp {
-	0% { transform: scale(1.14) translate(var(--px), var(--py)); }
-	20% { transform: scale(1.24) translateY(1.5%); }
-	30% { transform: scale(1.26) translateY(-1%); }
-	45% { transform: scale(1.36) translateY(1.5%); }
-	55% { transform: scale(1.38) translateY(-1%); }
-	70% { transform: scale(1.44) translateY(1%); }
-	100% { transform: scale(1.14) translate(var(--px), var(--py)); }
+	0% { transform: scale(1.18) translate(var(--px), var(--py)); }
+	15% { transform: scale(1.15, 1.25) translateY(3%); }
+	25% { transform: scale(1.45) translateY(-4%) rotate(-0.5deg); }
+	35% { transform: scale(1.35, 1.2) translateY(2%) rotate(0.5deg); }
+	45% { transform: scale(1.55) translateY(-6%) rotate(-0.3deg); }
+	55% { transform: scale(1.4, 1.18) translateY(1%) rotate(0.3deg); }
+	65% { transform: scale(1.62) translateY(-5%); }
+	75% { transform: scale(1.45, 1.2) translateY(0.5%); }
+	100% { transform: scale(1.18) translate(var(--px), var(--py)); }
 }
 
-/* Swimming in: a slow approach with a side-to-side drift. */
+/* Swimming in: a slow approach with a side-to-side drift, breathing. */
 @keyframes lunge-sway {
-	0% { transform: scale(1.14) translate(var(--px), var(--py)); }
-	30% { transform: scale(1.28) translate(-3%, 1%) rotate(-1deg); }
-	60% { transform: scale(1.4) translate(3%, -1%) rotate(1deg); }
-	100% { transform: scale(1.14) translate(var(--px), var(--py)); }
+	0% { transform: scale(1.18) translate(var(--px), var(--py)); }
+	20% { transform: scale(1.35) translate(-5%, 2%) rotate(-2deg); }
+	40% { transform: scale(1.45) translate(4%, -1%) rotate(1.5deg); }
+	60% { transform: scale(1.5) translate(-3%, 1.5%) rotate(-1deg); }
+	80% { transform: scale(1.55) translate(2%, -1%) rotate(0.5deg); }
+	100% { transform: scale(1.18) translate(var(--px), var(--py)); }
 }
 
 /* Hopping closer, wings and all. */
 @keyframes lunge-flutter {
-	0% { transform: scale(1.14) translate(var(--px), var(--py)); }
-	20% { transform: scale(1.26) translateY(-4%); }
-	35% { transform: scale(1.3) translateY(1%); }
-	50% { transform: scale(1.38) translateY(-4%); }
-	65% { transform: scale(1.4) translateY(0); }
-	100% { transform: scale(1.14) translate(var(--px), var(--py)); }
+	0% { transform: scale(1.18) translate(var(--px), var(--py)); }
+	15% { transform: scale(1.3) translateY(-8%) rotate(-3deg); }
+	30% { transform: scale(1.35) translateY(2%) rotate(2deg); }
+	45% { transform: scale(1.5) translateY(-10%) rotate(-2deg); }
+	60% { transform: scale(1.4) translateY(1%) rotate(1deg); }
+	75% { transform: scale(1.55) translateY(-6%) rotate(-1deg); }
+	100% { transform: scale(1.18) translate(var(--px), var(--py)); }
 }
 
 /* Swinging in on a branch. */
 @keyframes lunge-swing {
-	0% { transform: scale(1.14) translate(var(--px), var(--py)); }
-	30% { transform: scale(1.3) translateX(-5%) rotate(-3deg); }
-	60% { transform: scale(1.42) translateX(3%) rotate(2deg); }
-	100% { transform: scale(1.14) translate(var(--px), var(--py)); }
+	0% { transform: scale(1.18) translate(var(--px), var(--py)); }
+	25% { transform: scale(1.4) translateX(-10%) rotate(-5deg); }
+	50% { transform: scale(1.55) translateX(6%) rotate(3deg); }
+	75% { transform: scale(1.5) translateX(-3%) rotate(-1.5deg); }
+	100% { transform: scale(1.18) translate(var(--px), var(--py)); }
 }
 
 @keyframes lunge-wiggle {
-	0% { transform: scale(1.14) translate(var(--px), var(--py)); }
-	40% { transform: scale(1.3) rotate(-1deg); }
-	60% { transform: scale(1.32) rotate(1deg); }
-	100% { transform: scale(1.14) translate(var(--px), var(--py)); }
+	0% { transform: scale(1.18) translate(var(--px), var(--py)); }
+	30% { transform: scale(1.4) rotate(-2deg); }
+	55% { transform: scale(1.45) rotate(2deg); }
+	75% { transform: scale(1.42) rotate(-1deg); }
+	100% { transform: scale(1.18) translate(var(--px), var(--py)); }
 }
 
 @media (prefers-reduced-motion: reduce) {

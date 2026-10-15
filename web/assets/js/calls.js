@@ -135,6 +135,23 @@
 			o.frequency.linearRampToValueAtTime(60, t + 1.1);
 			hiss(t, 1.1, body, 'lowpass', 500, 1, 0.4, 0.1, 0.4);
 		},
+		// The spotted hyena's giggle: quick, nasal "hee-hee"s that climb and wobble.
+		laugh(out, t) {
+			const f = ctx.createBiquadFilter();
+			f.type = 'bandpass';
+			f.frequency.value = 1300;
+			f.Q.value = 1.5;
+			f.connect(grit(out, 3));
+			let at = 0;
+			for (let i = 0; i < 11; i++) {
+				const pitch = 520 + i * 45 + (i % 2 ? 60 : 0);
+				const len = 0.075 + Math.random() * 0.03;
+				const o = osc('sawtooth', pitch, t + at, len, f, 0.35, 0.008, 0.04);
+				o.frequency.exponentialRampToValueAtTime(pitch * 1.35, t + at + len * 0.4);
+				o.frequency.exponentialRampToValueAtTime(pitch * 0.85, t + at + len);
+				at += len + 0.035 + (i === 4 ? 0.12 : 0);
+			}
+		},
 		trumpet(out, t) {
 			const f = ctx.createBiquadFilter();
 			f.type = 'bandpass';

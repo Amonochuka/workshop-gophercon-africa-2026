@@ -13,7 +13,9 @@ func callOf(sp species.Species) Call {
 	switch sp.Family {
 	case "Felidae":
 		return Call{"pounce", "roar"}
-	case "Hyaenidae", "Ursidae", "Canidae":
+	case "Hyaenidae":
+		return Call{"pounce", "laugh"}
+	case "Ursidae", "Canidae":
 		return Call{"pounce", "growl"}
 	case "Elephantidae":
 		return Call{"stomp", "trumpet"}

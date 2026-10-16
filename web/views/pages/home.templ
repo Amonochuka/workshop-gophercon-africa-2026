@@ -2,6 +2,7 @@ package pages
 
 import (
 	"workshop/internal/domain/sighting"
+	"workshop/internal/domain/species"
 	"workshop/web/views/components"
 	"workshop/web/views/layout"
 )
@@ -12,6 +13,8 @@ templ Home(sightings []sighting.Sighting) {
 		Description: "Wildlife sightings from around the world, on a globe, a map and in photos.",
 	}) {
 		{{ summary := sighting.Summarise(sightings) }}
+		@components.IntelPanel(species.Animals())
+		@components.IntelDataScript()
 		<section class="hero" aria-labelledby="hero-title">
 			@components.ThreeScene(components.ThreeSceneProps{
 				Scene:    "globe",

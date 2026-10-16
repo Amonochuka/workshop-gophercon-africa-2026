@@ -2,7 +2,7 @@
 	"name": "Night Safari",
 	"short_name": "NightSafari",
 	"icons": [{ "src": "/assets/images/logo.svg", "sizes": "any", "type": "image/svg+xml" }],
-	"theme_color": "#030508",
-	"background_color": "#030508",
+	"theme_color": "#000800",
+	"background_color": "#000800",
 	"display": "standalone"
 }
